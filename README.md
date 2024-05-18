@@ -57,3 +57,23 @@ WORKDIR /usr/src/myapp
 RUN javac Main.java
 CMD ["java", "Main"]
 ```
+
+### Dockerfile for apache
+```
+#base images like ubuntu
+FROM ubuntu 
+# when check details of image ist show mainainer name
+maintainer akash 
+# to run command 
+RUN apt update ; apt install apache2 -y  
+# cd  in /var/www/html 
+workdir /var/www/html
+# copy <source_local>  <dest_continer>
+copy index.html    .
+# when run container   , to run apache service 
+CMD ["apachectl","-D", "FORGROUND"] 
+```
+### index.html 
+```
+<h1>HELLLLLOOOOOOOOOOOOOOOOOOOOOO</h1>
+```
