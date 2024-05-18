@@ -36,3 +36,24 @@ WORKDIR /usr/src/myapp
 RUN gcc -o myapp main.c
 CMD ["./myapp"]
 ```
+
+### Main.java
+```
+public class Main {
+	public static void main(String[] args){
+		for (int i = 0; i < 5; i++){
+			System.out.println(i);
+		}
+	}
+}
+
+```
+
+### Dockerfile for java
+```
+FROM openjdk:11
+COPY . /usr/src/myapp
+WORKDIR /usr/src/myapp
+RUN javac Main.java
+CMD ["java", "Main"]
+```
