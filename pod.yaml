@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: jecrc
+  namespace: jecrc
+spec:
+  containers:
+  - name: mycon
+    image: httpd
+    ports:
+      - containerPort: 80

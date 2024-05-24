@@ -1,0 +1,28 @@
+{
+    "kind": "Pod",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "mypo",
+        "creationTimestamp": null,
+        "labels": {
+            "run": "mypo"
+        }
+    },
+    "spec": {
+        "containers": [
+            {
+                "name": "mypo",
+                "image": "httpd",
+                "ports": [
+                    {
+                        "containerPort": 80
+                    }
+                ],
+                "resources": {}
+            }
+        ],
+        "restartPolicy": "Always",
+        "dnsPolicy": "ClusterFirst"
+    },
+    "status": {}
+}

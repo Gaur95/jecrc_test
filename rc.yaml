@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: jecrc-rc1
+  namespace: jecrc
+spec:
+  replicas: 2      # number of pods 
+  template:
+    metadata:
+      labels:
+        drink: coffee
+    spec:
+      containers:
+        - name: jcon
+          image: httpd
+          ports:
+          - containerPort: 80

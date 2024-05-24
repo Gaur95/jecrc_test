@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: jecrc-deploy
+  namespace: jecrc
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      drink: tea
+  template:
+    metadata:
+      labels:
+        drink: tea
+    spec:
+      containers:
+        - name: depcon
+          image: nginx
+          ports:
+          - containerPort: 80
