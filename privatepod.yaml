@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: jecrc13
+  namespace: jecrc
+spec: # kubectl create secret docker-registry  jecrccred --docker-username <name> --docker-password <password> -n jecrc
+  imagePullSecrets:
+    - name: jecrccred2
+  containers:
+  - name: mycon1
+    image: aakashgaur57/apache
+    ports:
+      - containerPort: 80
