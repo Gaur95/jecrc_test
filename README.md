@@ -38,6 +38,6 @@
 ## ConfigMaps and Pods
 You can write a Pod spec that refers to a ConfigMap and configures the container(s) in that Pod based on the data in the ConfigMap. The Pod and the ConfigMap must be in the same namespace.
 
-- [configmap.yaml](configmap.yaml)
+- [configMap.yaml](configMap.yaml)
 
-- [podwithconfigmap.yaml](podwithconfigmap.yaml)
+- [podwithconfig.yaml](podwithconfig.yaml)
