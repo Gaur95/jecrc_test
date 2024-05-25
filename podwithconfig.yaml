@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp22
+  labels:
+    name: myapp
+  namespace: jecrc
+spec:
+  containers:
+  - name: myapp22
+    image: aakashgaur57/code
+    ports:
+      - containerPort: 8080
+    env:
+      - name: PASSWORD
+        valueFrom:
+         configMapKeyRef:
+          name: myconfig
+          key: PASSWORD
