@@ -41,3 +41,4 @@ You can write a Pod spec that refers to a ConfigMap and configures the container
 - [configMap.yaml](configMap.yaml)
 
 - [podwithconfig.yaml](podwithconfig.yaml)
+- [nodeport.yaml](nodeport.yaml)
