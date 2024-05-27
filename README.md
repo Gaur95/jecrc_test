@@ -63,6 +63,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: mypv
+  namespace: jecrc
 spec:
   capacity:
     storage: 1Gi
@@ -79,6 +80,7 @@ spec:
 kind: PersistentVolumeClaim
 metadata:
   name: mypvc
+  namespace: jecrc
 spec:
   resources:
     requests:
