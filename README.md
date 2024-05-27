@@ -61,27 +61,27 @@ You can write a Pod spec that refers to a ConfigMap and configures the container
 ```
 apiVersion: v1
 kind: PersistentVolume
-metadata:
-  name: mypv
-  namespace: jecrc
+metadata: 
+   name: jecrcpv
+   namespace: jecrc
 spec:
-  capacity:
-    storage: 1Gi
-  volumeMode: Filesystem
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Recycle
-  storageClassName: standard
-  hostPath:
-    path: /data/mypv
+ capacity:
+   storage: 1Gi
+ volumeMode: Filesystem
+ accessModes: 
+  - ReadWriteOnce                #RO RWO RWM
+ persistentVolumeReclaimPolicy: Recycle
+ storageClassName: standard
+ hostPath:
+  path: /data/mypv
  ```
  ```
- apiVersion: v1
+apiVersion: v1
 kind: PersistentVolumeClaim
-metadata:
-  name: mypvc
+metadata: 
+  name: jecrcpvc
   namespace: jecrc
-spec:
+spec: 
   resources:
     requests:
       storage: 1Gi
@@ -97,23 +97,22 @@ spec:
 ```
 apiVersion: v1
 kind: Pod
-metadata:
-  name: akpod
-  labels:
-    name: kuch
+metadata: 
+  name: jecrcpvcpod
+  namespace: jecrc
 spec:
   containers:
-    - name: akc1
+    - name: jecrccon3
       image: httpd
-      ports:
-        - containerPort: 80
+      ports:  
+       - containerPort: 80
       volumeMounts:
         - mountPath: /var/www/html/
-          name: my-pvc
+          name: my-pvc 
   volumes:
     - name: my-pvc
       persistentVolumeClaim:
-        claimName: mypvc
+        claimName: jecrcpvc
 ```
 
 ### for dashboard
