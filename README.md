@@ -1,6 +1,5 @@
 # jecrc_test
-## subheading
-### title
+
 ## history
 ```
 1416  2024-05-24 01:16:37 PM kubectl get pod
@@ -42,3 +41,36 @@ You can write a Pod spec that refers to a ConfigMap and configures the container
 
 - [podwithconfig.yaml](podwithconfig.yaml)
 - [nodeport.yaml](nodeport.yaml)
+
+### for dashboard
+#### run in powershell or terminal
+```
+kubectl apply -f https://raw.githubusercontent.com/Gaur95/for_docker_desktop/kubernetes/dashboard.yml
+
+```
+```
+akash@sky:~/Desktop/k8s_code$ kubectl proxy 
+Starting to serve on 127.0.0.1:8001
+
+```
+#### run in web browser
+```
+http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
+
+```
+### create a token
++ kubectl create token <service_account_name> -n <namespace_name>
+```
+kubectl create token kubernetes-dashboard -n kubernetes-dashboard
+```
+```
+akash@sky:~$ kubectl create token  kubernetes-dashboard -n kubernetes-dashboard
+eyJhbGciOiJSUzI1NiIsImtpZCI6IlJsc0NHTjVxeWNKNk1IWkxMdkVZUVpmLVdxUC1VUWxXMVE3TUlwN
+ncwZWcifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWw
+iXSwiZXhwIjoxNjg0MzUwOTQxLCJpYXQiOjE2ODQzNDczNDEsImlzcyI6Imh0dHBzOi8va3ViZXJuZXRl
+cy5kZWZhdWx0LnN2Yy5jbHVzdGVyLmxvY2FsIiwia3ViZXJuZXRlcy5pbyI6eyJuYW1lc3BhY2UiOiJkZ
+WZhdWx0Iiwic2VydmljZWFjY291bnQiOnsibmFtZSI6ImRlZmF1bHQiLCJ1aWQiOiI2MTE5ZmU1ZC02M2
+UxLTQ4MmYtYTEyMS0xZmVmZmY5M2EyMzkifX0sIm5iZiI6MTY4NDM0NzM0MSwic3ViIjoic3lzdGVtOnN
+lcnZpY2VhY2NvdW50OmRlZmF1bHQ6ZGVmYXVsdCJ9.hrVEJTRzPPRftt0nVqH5czX6oZMn-q4I
+```
++ copy token in to dashboard login 
