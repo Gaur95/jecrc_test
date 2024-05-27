@@ -42,6 +42,78 @@ You can write a Pod spec that refers to a ConfigMap and configures the container
 - [podwithconfig.yaml](podwithconfig.yaml)
 - [nodeport.yaml](nodeport.yaml)
 
+### k8s Volumes
+**emptyDir**: An emptyDir volume is created when a pod is scheduled and exists for the lifetime of that pod. It is initially empty and is useful for sharing files between containers within the same pod or storing temporary data. However, its contents are lost when the pod is deleted or restarted.
+
+**hostPath**: The hostPath volume mounts a file or directory from the host node's filesystem into the pod. It allows containers to access files on the host machine, but it is not suitable for scenarios where pod mobility is required since the data is tied to a specific node. Using hostPath requires caution as it grants access to the host's filesystem.
+
+**ConfigMap**: A ConfigMap volume allows you to inject configuration files as key-value pairs into the pod. ConfigMaps can be used to store environment variables, configuration files, or any other non-sensitive data. The ConfigMap data is mounted into the pod as files or environment variables, providing easy access for the containers.
+
+**Secret**: The Secret volume is similar to the ConfigMap volume, but it is designed specifically for storing sensitive information, such as passwords, API keys, or TLS certificates. Secrets are base64 encoded and can be mounted into a pod as files or exposed as environment variables, ensuring secure access to sensitive data.
+
+**Persistentvolume(PV) and PersistentVolumeClaim (PVC)**: **PersistentVolume (PV)***: A PersistentVolume represents a piece of persistent storage in the cluster. It is a cluster-level resource that abstracts the underlying storage implementation, such as a network-attached disk or a cloud storage volume. PVs have a lifecycle independent of any specific pod and can be dynamically provisioned or statically created by a cluster administrator.
+**A PersistentVolumeClaim** is used to request a persistent storage resource from a storage system. It provides a way to abstract the underlying storage implementation from the pod. A PersistentVolumeClaim can be dynamically provisioned by a storage class or statically bound to a pre-existing PersistentVolume. This type of volume is suitable for stateful applications that require data persistence.
+
+**CSI Volumes**: Container Storage Interface (CSI) volumes enable the use of external storage systems that adhere to the CSI standard. CSI allows for the integration of various storage solutions into Kubernetes. With CSI volumes, you can use third-party storage systems, such as cloud providers' managed storage services or specialized storage hardware, to provide persistent storage to your pods.
+
+## Demo of PV and PVC
+### yaml of pv and pvc 
+```
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mypv
+spec:
+  capacity:
+    storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: standard
+  hostPath:
+    path: /data/mypv
+ ```
+ ```
+ apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mypvc
+spec:
+  resources:
+    requests:
+      storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard
+ ```
+ <img src='pv_pvcdemo.png'>
+ 
+### pod with pvc     --- yaml
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: akpod
+  labels:
+    name: kuch
+spec:
+  containers:
+    - name: akc1
+      image: httpd
+      ports:
+        - containerPort: 80
+      volumeMounts:
+        - mountPath: /var/www/html/
+          name: my-pvc
+  volumes:
+    - name: my-pvc
+      persistentVolumeClaim:
+        claimName: mypvc
+```
+
 ### for dashboard
 #### run in powershell or terminal
 ```
