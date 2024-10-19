@@ -1,84 +1,87 @@
-# jecrc_test
-## subheading
-### title
-### dockerfile
+# terraform
+## main.tf
 ```
-FROM python:3
-WORKDIR /usr/src/app
-COPY hello.py .
-CMD ["python", "./hello.py"]
-```
-### hello.py
-```
-import time
-fruits = ["apple", "banana", "cherry"]
-for x in fruits:
-    print(x)
-    time.sleep(2)
-```
-### main.c
-```
-#include <stdio.h>
-int main() {
- int i = 1;
- while (i <= 5){
- printf("%d\n" , i);
- ++i;
+provider "aws" {
+  access_key = var.access
+  secret_key = var.secret
+  region = "ap-south-1"
+}
+
+resource "aws_instance" "myec2" {
+  ami= "ami-0dee22c13ea7a9a67"
+  instance_type = "t2.micro"
+  key_name = aws_key_pair.mykey.key_name
+  security_groups = [ aws_security_group.sg.name ]
+  tags = {
+    "Name" = "terraform_instance"
+  }
+  
+  connection {
+    type = "ssh"
+    host = self.public_ip
+    user = "ubuntu"
+    private_key = file("/home/akash/.ssh/id_rsa")
+  }
+
+ provisioner "file" {
+   source = "/home/akash/Desktop/terraform1/demo.txt"
+   destination = "/home/ubuntu/demo.txt"
  }
- return 0;
+provisioner "local-exec" {
+  command = "echo ${aws_instance.myec2.public_ip} >myip.txt"
 }
-```
-### Dockerfile for c
-```
-FROM gcc:4.9
-COPY . /usr/src/myapp
-WORKDIR /usr/src/myapp
-RUN gcc -o myapp main.c
-CMD ["./myapp"]
-```
-
-### Main.java
-```
-public class Main {
-	public static void main(String[] args){
-		for (int i = 0; i < 5; i++){
-			System.out.println(i);
-		}
-	}
+provisioner "remote-exec" {
+  inline = [ "sudo apt update; sudo apt install apache2 -y" ]
+  
+}
 }
 
+resource "aws_key_pair" "mykey" {
+
+  key_name = "jecrckey"
+  public_key = file("/home/akash/.ssh/id_rsa.pub")
+}
+
+resource "aws_security_group" "sg" {
+  name = "terra-sg"
+  description = "terra-sg"
+  vpc_id = "vpc-0043d7fa13a69e6dd"
+
+  ingress {
+    from_port = 22
+    to_port = 22
+    protocol = "tcp"
+    cidr_blocks = [ "0.0.0.0/0" ]
+  }
+  ingress {
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
+    cidr_blocks = [ "0.0.0.0/0" ]
+  }
+ egress {
+  from_port = 0
+  to_port = 0
+  protocol = "-1"
+  cidr_blocks = [ "0.0.0.0/0" ]
+ }
+}
+
+output "publicip1" {
+    value = aws_instance.myec2.public_ip
+}
 ```
 
-### Dockerfile for java
-```
-FROM openjdk:11
-COPY . /usr/src/myapp
-WORKDIR /usr/src/myapp
-RUN javac Main.java
-CMD ["java", "Main"]
-```
+## var.tf
 
-### Dockerfile for apache
 ```
-#base images like ubuntu
-FROM ubuntu 
-# when check details of image ist show mainainer name
-maintainer akash 
-# to run command 
-RUN apt update ; apt install apache2 -y  
-# cd  in /var/www/html 
-workdir /var/www/html
-# copy <source_local>  <dest_continer>
-copy index.html    .
-# when run container   , to run apache service 
-CMD ["apachectl","-D", "FORGROUND"] 
-```
-### index.html 
-```
-<h1>HELLLLLOOOOOOOOOOOOOOOOOOOOOO</h1>
-```
-
-# portaner
-```
-docker run -d -p 8000:8000 -p 9443:9443 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
+variable "access" {
+    description = "this is access_key"
+    default = "*****************"
+  
+}
+variable "secret" {
+  description = "this is secret_key"
+  default = "********************************"
+}
 ```
